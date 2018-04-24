@@ -1,0 +1,4 @@
+---
+- name: Install docker on MacOSX
+  include: macos.yml
+  when: ansible_distribution =="MacOSX"

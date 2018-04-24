@@ -1,0 +1,12 @@
+---
+- name: Create ECR repo
+  ecs_ecr:
+    name: dogbuddy
+  register: ecr
+- debug:
+    msg: "{{ ecr }}"
+- name: Get aws ecr login
+  command: aws ecr get-login --no-include-email
+  register: docker_login
+- name: Docker login
+  command: "{{ docker_login.stdout }}"

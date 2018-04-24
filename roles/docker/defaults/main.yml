@@ -1,0 +1,4 @@
+
+---
+base_url_docker: https://download.docker.com/linux/centos/7/$basearch/stable
+gpg_key_docker: https://download.docker.com/linux/centos/gpg

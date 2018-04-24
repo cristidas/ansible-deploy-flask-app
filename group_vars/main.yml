@@ -1,0 +1,1 @@
+docker_project_path: "{{ ansible_env.HOME }}/docker/docker-dogbuddy-{{ app_env }}"
