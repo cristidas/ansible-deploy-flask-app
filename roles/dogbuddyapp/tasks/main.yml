@@ -9,28 +9,18 @@
     dest: "{{ docker_project_path }}/Dockerfile.web"
 - name: Copy the docker-compose.yml file
   copy:
-    src: "docker-compose-{{ app_env }}.yml"
+    src: "docker-compose.yml"
     dest: "{{ docker_project_path }}"
 - name: Copy the "{{ app_root }}" directory
   copy:
     src: "{{ app_root }}"
     dest: "{{ docker_project_path }}"
 
-# - name: Check if container is running
-#   command: docker ps -q -f name="{{ docker_container_name }}"
-#   register: docker_ps
-# - name: Stop running container
-#   command: docker stop "{{ docker_container_name }}"
-#   when: docker_ps.stdout
-# - name: Remove container
-#   command: docker rm "{{ docker_container_name }}"
-#   when: docker_ps.stdout
-
 - name: Build the container image for web app
   command: docker build -t "{{ docker_image_name }}" -f "{{ docker_project_path }}"/Dockerfile.web "{{ docker_project_path }}"
-# - name: Run the container
-#   command: docker run -d -p 5000:5000 -t --name "{{ docker_container_name }}" "{{ docker_image_name }}"
-# - name: Deploy the container
-#   command: docker-compose -f "{{ docker_project_path }}/docker-compose-{{ app_env }}.yml" up -d
 - name: Tag the image with the repositoryUri from AWS ECR
-  command: docker tag "{{ docker_image_name }}" "{{ ecr.repositoryUri }}"
+  command: docker tag "{{ docker_image_name }}" "{{ ecr_repositoryUri }}"
+  when: app_env == "production"
+- name: Push the image with to AWS ECR
+  command: docker push "{{ ecr_repositoryUri }}"
+  when: app_env == "production"

@@ -3,8 +3,13 @@
   ecs_ecr:
     name: dogbuddy
   register: ecr
-- debug:
-    msg: "{{ ecr }}"
+# - name:
+#   lineinfile:
+#     path: ../../../group_vars/main.yml
+#     line: "ecr_repositoryUri: {{ ecr.repositoryUri }}"
+- name: Store value for ecr.repository.repositoryUri
+  set_fact:
+    ecr_repositoryUri: "{{ ecr.repository.repositoryUri }}"
 - name: Get aws ecr login
   command: aws ecr get-login --no-include-email
   register: docker_login

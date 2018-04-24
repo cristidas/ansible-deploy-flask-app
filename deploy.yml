@@ -7,10 +7,13 @@
 
   tasks:
     - include_role:
+        name: ecs
+      when: app_env == "production"
+    - include_role:
         name: dogbuddyapp # this role expects variable app_env to be defined; we will do this with -e 'app_env=development' or -e 'app_env=production', when executing this playbook with ansible-playbook command
     - include_role:
         name: nginx
-      when: "{{ app_env }} == production"
+      when: app_env == "production"
     - name: Deploy the container
-      command: docker-compose -f "{{ docker_project_path }}/docker-compose-{{ app_env }}.yml" up -d
-      when: "{{ app_env }} == development"
+      command: docker-compose -f "{{ docker_project_path }}/docker-compose.yml" up -d
+      when: app_env == "development"

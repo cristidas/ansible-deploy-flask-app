@@ -10,4 +10,6 @@
 - name: Build the container image for nginx
   command: docker build -t "{{ docker_image_name }}" -f "{{ docker_project_path }}"/Dockerfile.nginx "{{ docker_project_path }}"
 - name: Tag the image with the repositoryUri from AWS ECR
-  command: docker tag "{{ docker_image_name }}" "{{ ecr.repositoryUri }}"
+  command: docker tag "{{ docker_image_name }}" "{{ ecr_repositoryUri }}"
+- name: Push the image with to AWS ECR
+  command: docker push "{{ ecr_repositoryUri }}"
